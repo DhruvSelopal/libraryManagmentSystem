@@ -1,19 +1,18 @@
-using Microsoft.VisualBasic;
+using Microsoft.EntityFrameworkCore;
 
-public class Program
-{
-    private WebApplicationBuilder builder;
-    private WebApplication app;
-    Dictionary<book
+var builder = WebApplication.CreateBuilder(args);
 
-    Program()
-    {
-        WebApplicationBuilder builder = WebApplication.CreateBuilder();
-        WebApplication app = builder.Build();
-    }
+// ✅ Add DbContext
+builder.Services.AddDbContext<LibraryContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    public static void Main(string[] args)
-    {
+// ✅ Add controllers
+builder.Services.AddControllers();
 
-    }
-}
+var app = builder.Build();
+
+app.UseRouting();
+app.MapControllers();
+
+app.Run();
+

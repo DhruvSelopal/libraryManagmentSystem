@@ -1,10 +1,15 @@
-class User
+using System.ComponentModel.DataAnnotations;
+
+public class User
 {
-    private string firstname;
-    private string lastname;
-    private string phone;
-    private int age;
-    private string username;
-    private string address;
-    private 
+    [Key]
+    public string UserName { get; set; }
+
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string PhoneNo { get; set; }
+    public string UserAddress { get; set; }
+
+    // Navigation property
+    public List<IssueRecord> IssueRecords { get; set; }
 }
