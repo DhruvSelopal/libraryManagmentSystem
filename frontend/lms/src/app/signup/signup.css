@@ -1,0 +1,14 @@
+.btn-primary{
+    background-color: rgb(180, 148, 6);
+    border: 1px solid rgb(180, 148, 6);
+}
+.btn-primary:active{
+    border: 1px solid rgb(204, 176, 52);
+    background-color: rgb(204, 176, 52);
+}
+.main{
+    height:70vh;
+    background-color: beige;
+    margin-top: 15vh;
+    border-radius: 10px;
+}

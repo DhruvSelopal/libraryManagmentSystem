@@ -1,0 +1,41 @@
+<div class="container" style="height: 99vh;text-align: center;">
+    <div class="row" style="height: max-content;">
+        <div class="col-3">&nbsp;</div>
+        <div class="col-6 main" >
+            <h2 style="margin-top: 3vh;">Join us.... <br> Create an account</h2>
+
+            <div class="login" style="padding-left: 50px;padding-right: 50px;margin-top: 8vh;">
+
+                <div style="display: flex;justify-content: space-around;" >
+                    <input type="text" class="form-control" placeholder="firstname" >
+                    <div style="padding-left: 10px;padding-right: 10px;">&nbsp;</div>
+                    <input type="text" class="form-control" placeholder="lastname">
+                </div>
+
+                <div style="display: flex;justify-content: space-around;margin-top: 1.2vh;" >
+                    <input type="text" class="form-control" placeholder="phone" >
+                    <div style="padding-left: 10px;padding-right: 10px;">&nbsp;</div>
+                    <input type="number" class="form-control" placeholder="age">
+                </div>
+
+                <input type="text" class="form-control" style="margin-top: 1.2vh;" placeholder="username">
+
+                <input type="text" class="form-control" style="margin-top: 1.2vh;" placeholder="email     (optional)">
+
+                <textarea name="address" placeholder="address (optional)" class="form-control"  style="margin-top: 1.2vh;" ></textarea>
+
+                <input type="password" class="form-control" style="margin-top: 1.2vh;" placeholder="passwrod">
+                <input type="password" class="form-control" style="margin-top: 1.2vh;" placeholder="confirm password">
+
+                <div style="display: flex;justify-content:space-between;">
+                    <button class="btn btn-primary mt-3" [routerLink]="['/login']">Login</button>
+                    <button class="btn btn-primary mt-3" [routerLink]="['/login']" >Signup</button>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
