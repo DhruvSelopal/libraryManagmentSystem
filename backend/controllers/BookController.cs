@@ -2,8 +2,14 @@ using Microsoft.EntityFrameworkCore;
 
 static public class BookController
 {
+    static Dictionary<string, string> bookQueries = new Dictionary<string, string>
+    {
+        { "getallbooks","SELECT * FROM books"}
+    };
     public static void RegisterBookRoutes(WebApplication app, DbContext lib)
     {
+        bookQueries = new Dictionary<string, string>();
+        bookQueries.Add("getallbooks", "SELECT * FROM books");
         //get all books
         app.MapGet("/books", () =>
         {
