@@ -21,7 +21,7 @@ namespace backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Book", b =>
+            modelBuilder.Entity("Books", b =>
                 {
                     b.Property<int>("BookId")
                         .ValueGeneratedOnAdd()
@@ -114,7 +114,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("IssueRecord", b =>
                 {
-                    b.HasOne("Book", "Book")
+                    b.HasOne("Books", "Book")
                         .WithMany("IssueRecords")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -129,7 +129,7 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Book", b =>
+            modelBuilder.Entity("Books", b =>
                 {
                     b.Navigation("IssueRecords");
                 });

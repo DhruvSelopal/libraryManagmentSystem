@@ -31,20 +31,15 @@ class Program
         string? dbUrl = config.GetConnectionString("DefaultConnection");
 
         DbContextOptions<LibraryContext> options = new DbContextOptionsBuilder<LibraryContext>().UseSqlServer(dbUrl).Options;
-        DbContext lib = new LibraryContext(options);
+        LibraryContext lib = new LibraryContext(options);
 
-        lib.Add(new User
-        {
-            UserName = "john_doe",
-            FirstName = "John",
-            LastName = "Doe",
-            PhoneNo = "1234567890",
-            UserAddress = "123 Elm Street"
-        });
+        WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        WebApplication app = builder.Build();
 
-        lib.SaveChanges();
-
-        Console.WriteLine("Executed");
+        BookController.RegisterBookRoutes(app,lib);
+        UserController.registerUserRoutes(app, lib);
+        app.Run();
+        Console.Write("Executed");
     }
 }
 

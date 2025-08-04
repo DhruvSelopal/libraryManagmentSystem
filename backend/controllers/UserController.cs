@@ -1,43 +1,68 @@
+using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 static public class UserController
 {
-    static Dictionary<string, string> bookQueries = new Dictionary<string, string>
-    {
-        { "adduser","INSERT INTO books INSERT INTO User (UserName, FirstName, LastName, PhoneNo, UserAddress, password, email, age) VALUES(1, 'The Great Gatsby', 'F. Scott Fitzgerald', 5, 'Classic novel set in the 1920s', 'images/gatsby.jpg')"}
-    };
 
-    public static void registerUserRoutes(WebApplication app, DbContext lib)
+    public static void registerUserRoutes(WebApplication app, LibraryContext lib)
     {
+        Console.WriteLine("code is reaching till this point");
         // creating user
         app.MapPost("/user/signup", (SignUpRequest user) =>
         {
-            lib.Database.ExecuteSqlRaw("check if user exist first if not then sign up");
+            int users = lib.Database.ExecuteSqlRaw("SELECT UserName FROM dbo.Users WHERE username={0}",user.UserName);
+            if (users == -1)
+            {
+                lib.Database.ExecuteSqlRaw(@"
+                INSERT INTO dbo.Users
+                (UserName, FirstName, LastName, PhoneNo, UserAddress, password, email, age)
+                VALUES
+                ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7});
+            ",
+                user.UserName,
+                user.FirstName,
+                user.LastName,
+                user.PhoneNo,
+                user.UserAddress,
+                user.password,
+                user.email,
+                user.age);
+                Console.WriteLine("Values added");
+                return Results.Ok("User added successfully");
+            }
+            else return Results.BadRequest($"User exists {users}");
         });
+
+        Console.WriteLine("code is reaching till this point");
 
         // checking if user exist
         app.MapPost("/user/login", (LoginRequest lr) =>
         {
-            lib.Database.ExecuteSqlRaw("login check");
+            return Results.Ok();
+            // lib.Database.ExecuteSqlRaw("login check");
         });
 
         //get all books issued by user
-        app.MapGet("/user/getbooks/{username:string}", (string username) =>
+        app.MapGet("/user/getbooks/{username}", (string username) =>
         {
-            lib.Database.ExecuteSqlRaw("Get books ");
+            return Results.Ok();
+            // lib.Database.ExecuteSqlRaw("Get books ");
         });
 
         //update user details
-        app.MapPut("/user/update/{username:string}", (SignUpRequest user, string username) =>
+        app.MapPut("/user/update/{username}", (SignUpRequest user, string username) =>
         {
-            lib.Database.ExecuteSqlRaw("update user");
+            return Results.Ok();
+            // lib.Database.ExecuteSqlRaw("update user");
         });
 
         //return a book
-        app.MapGet("/user/bookreturn/{username:string}/{bookid:int}", (string username, int bookid) =>
+        app.MapGet("/user/bookreturn/{username}/{bookid:int}", (string username, int bookid) =>
         {
-            lib.Database.ExecuteSqlRaw("add record increase book count remove from list");
+            return Results.Ok();
+            // lib.Database.ExecuteSqlRaw("add record increase book count remove from list");
         });
-    }    
+    }
+
 }

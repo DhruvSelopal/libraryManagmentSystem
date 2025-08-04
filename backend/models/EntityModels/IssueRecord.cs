@@ -14,7 +14,7 @@ public class IssueRecord
     // Foreign Key to Book
     public int BookId { get; set; }
     [ForeignKey("BookId")]
-    public Book? Book { get; set; }
+    public Books? Book { get; set; }
 
     public DateTime IssueDate { get; set; }
     public DateTime? ReturnDate { get; set; }

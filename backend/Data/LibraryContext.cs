@@ -6,6 +6,6 @@ public class LibraryContext : DbContext
         : base(options) { }
 
     public DbSet<User> Users { get; set; }
-    public DbSet<Book> Books { get; set; }
+    public DbSet<Books> Books { get; set; }
     public DbSet<IssueRecord> IssueRecords { get; set; }
 }
