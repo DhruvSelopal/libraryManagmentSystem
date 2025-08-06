@@ -156,4 +156,9 @@ public static class SqlFunctions
 
         return rows > 0;
     }
+
+    public static bool AddBook()
+    {
+        return false;
+    }
 }
