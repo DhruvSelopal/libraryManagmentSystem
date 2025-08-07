@@ -34,7 +34,17 @@ class Program
         LibraryContext lib = new LibraryContext(options);
 
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
         WebApplication app = builder.Build();
+        app.UseCors();
 
         BookController.RegisterBookRoutes(app,lib);
         UserController.registerUserRoutes(app, lib);

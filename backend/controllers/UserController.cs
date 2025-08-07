@@ -14,7 +14,7 @@ static public class UserController
         return SqlFunctions.CreateUser(lib, user)
             ? Results.Ok("User added successfully")
             : Results.BadRequest("User exists");
-    });
+    }).RequireCors("AllowAll");
 
     app.MapPost("/user/login", (LoginRequest lr) =>
     {
