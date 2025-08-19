@@ -1,0 +1,73 @@
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="logo">LibraryHub</a>
+    <div class="nav-links">
+      <a href="/home" class="active">Home</a>
+      <a href="/books">Browse Books</a>
+      <a href="/profile">My Books</a>
+    </div>
+    <div class="profile-dropdown">
+      <button class="profile-button">
+        <img src="/deaultprofile.png" alt="Profile" class="profile-icon">
+        <span class="profile-name">{{homePageServ.username}}</span>
+        
+      </button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item">
+          <i class="icon-user"></i> My Profile
+        </button>
+        <button class="dropdown-item">
+          <i class="icon-settings"></i> Settings
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item logout" (click)="signout()">
+          <i class="icon-logout"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <!-- Static Content -->
+  <main>
+    <section class="hero">
+      <h1>Welcome to LibraryHub</h1>
+      <p>Discover your next favorite book</p>
+    </section>
+
+    <h2>Featured Books</h2>
+    <section class="book-section">
+     <div *ngFor="let book of allBooks">
+            <div class="container-fluid" [ngClass]="book.bookCount === 0? 'outOfStock':'notOutOfStock'" style="text-align: center;">
+                <div class="row">
+                    <div class="col-2">&nbsp;</div>
+                    <div class="col-8" >
+                        <div>
+                            <img class="bookcover" src="{{book.imagePath}}" alt="{{book.bookName}}" >
+                        </div>
+                    </div>
+                    <div class="col-2">&nbsp;</div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h4>{{book.bookName}}</h4>
+                  </div>
+                </div>
+                <div class="row" >
+                    <div class="col-1">&nbsp;</div>
+                    <div class="col-10">
+                        <button class="btn btn-primary">Issue Book</button>
+                    </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+            </div>
+    </div>
+     
+    </section>
+    <div *ngIf="isLoading">
+        <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Loading...</p>
+        </div>
+    </div>
+  </main>

@@ -1,0 +1,14 @@
+.bookcover{
+    height: 30vh;
+    width: 20vh;
+    margin-top: 10px;
+    margin-left: -10px;
+    border-radius: 10px;
+}
+.container-fluid{
+    background-color: azure;
+    width: 30vh;
+    height: 40vh;
+    border: 2px solid black;
+    border-radius: 10px;
+}

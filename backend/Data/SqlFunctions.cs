@@ -30,11 +30,13 @@ public static class SqlFunctions
 
     public static bool Login(LibraryContext lib, LoginRequest login)
     {
+        Console.WriteLine($"Username : {login.Username}     password: {login.Password}");
         // Check username and password match
         int count = lib.Users
             .FromSqlRaw("SELECT * FROM dbo.Users WHERE UserName = {0} AND password = {1}",
                 login.Username, login.Password)
             .Count();
+
 
         return count > 0;
     }
@@ -155,6 +157,15 @@ public static class SqlFunctions
             bookId);
 
         return rows > 0;
+    }
+
+    public static List<Books> GetBooks(LibraryContext lib)
+    {
+        List<Books> books = lib.Books.FromSqlRaw(@"
+            SELECT * FROM dbo.Books
+        ").ToList();
+
+        return books;
     }
 
     // public static bool AddBook()

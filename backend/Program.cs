@@ -44,7 +44,7 @@ class Program
             });
         });
         WebApplication app = builder.Build();
-        app.UseCors();
+        app.UseCors("AllowAll");
 
         BookController.RegisterBookRoutes(app,lib);
         UserController.registerUserRoutes(app, lib);

@@ -9,12 +9,12 @@ static public class UserController
     {
         Console.WriteLine("code is reaching till this point");
         // creating user
-            app.MapPost("/user/signup", (SignUpRequest user) =>
-    {
-        return SqlFunctions.CreateUser(lib, user)
-            ? Results.Ok("User added successfully")
-            : Results.BadRequest("User exists");
-    }).RequireCors("AllowAll");
+        app.MapPost("/user/signup", (SignUpRequest user) =>
+{
+    return SqlFunctions.CreateUser(lib, user)
+        ? Results.Ok("User added successfully")
+        : Results.BadRequest("User exists");
+});
 
     app.MapPost("/user/login", (LoginRequest lr) =>
     {

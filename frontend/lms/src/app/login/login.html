@@ -6,11 +6,11 @@
 
             <div class="login" style="padding-left: 100px;padding-right: 100px;margin-top: 8vh;">
 
-                <input type="text" class="form-control" placeholder="username" >
-                <input type="text" class="form-control mt-3" placeholder="password">
+                <input type="text" class="form-control" placeholder="username" [(ngModel)]="username">
+                <input type="text" class="form-control mt-3" placeholder="password" [(ngModel)]="password">
 
                 <div style="display: flex;justify-content:space-between;">
-                    <button class="btn btn-primary mt-3">Login</button>
+                    <button class="btn btn-primary mt-3" (click)="login()">Login</button>
                     <button class="btn btn-primary mt-3" [routerLink]="['/signup']">Signup</button>
                 </div>
 

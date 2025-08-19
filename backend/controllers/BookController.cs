@@ -12,11 +12,15 @@ static public class BookController
             : Results.BadRequest("Failed to update book count");
     });
 
-    app.MapGet("/books/issue/{bookid:int}", (int bookid) =>
-    {
-        return SqlFunctions.IssueBookByBookId(lib, bookid)
-            ? Results.Ok("Book count decreased")
-            : Results.BadRequest("Failed to update book count");
-    });
+        app.MapGet("/books/issue/{bookid:int}", (int bookid) =>
+        {
+            return SqlFunctions.IssueBookByBookId(lib, bookid)
+                ? Results.Ok("Book count decreased")
+                : Results.BadRequest("Failed to update book count");
+        });
+        app.MapGet("/books", () =>
+        {
+            return SqlFunctions.GetBooks(lib);
+        });
     }
 }
