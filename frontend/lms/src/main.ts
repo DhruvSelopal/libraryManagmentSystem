@@ -1,6 +1,15 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { provideHttpClient, withInterceptors } from '@angular/common/http'; // <-- Import these
 
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
+import { App } from './app/app';
+import { loadingInterceptor } from './app/interceptors/loading.interceptor';
+
+bootstrapApplication(App, {
+  providers: [
+    // Provide HttpClient and register our interceptor
+    provideHttpClient(
+      withInterceptors([loadingInterceptor]) // <-- Register it here
+    ),
+    // ... other app-wide providers
+  ]
+});

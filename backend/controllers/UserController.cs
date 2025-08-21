@@ -16,32 +16,37 @@ static public class UserController
         : Results.BadRequest("User exists");
 });
 
-    app.MapPost("/user/login", (LoginRequest lr) =>
-    {
-        return SqlFunctions.Login(lib, lr)
-            ? Results.Ok("Login successful")
-            : Results.Unauthorized();
-    });
+        app.MapPost("/user/login", (LoginRequest lr) =>
+        {
+            return SqlFunctions.Login(lib, lr)
+                ? Results.Ok("Login successful")
+                : Results.Unauthorized();
+        });
 
-    app.MapGet("/user/getbooks/{username}", (string username) =>
-    {
-        var books = SqlFunctions.GetBooksIssuedByUser(lib, username);
-        return Results.Ok(books);
-    });
+        app.MapGet("/user/getbooks/{username}", (string username) =>
+        {
+            var books = SqlFunctions.GetBooksIssuedByUser(lib, username);
+            return Results.Ok(books);
+        });
 
-    app.MapPut("/user/update/{username}", (SignUpRequest user, string username) =>
-    {
-        return SqlFunctions.UpdateUserDetails(lib, user, username)
-            ? Results.Ok("User updated")
-            : Results.BadRequest("Update failed");
-    });
+        app.MapPut("/user/update/{username}", (SignUpRequest user, string username) =>
+        {
+            return SqlFunctions.UpdateUserDetails(lib, user, username)
+                ? Results.Ok("User updated")
+                : Results.BadRequest("Update failed");
+        });
 
-    app.MapGet("/user/bookreturn/{username}/{bookid:int}", (string username, int bookid) =>
-    {
-        return SqlFunctions.ReturnBook(lib, username, bookid)
-            ? Results.Ok("Book returned successfully")
-            : Results.BadRequest("Return failed");
-    });
+        app.MapGet("/user/bookreturn/{username}/{bookid:int}", (string username, int bookid) =>
+        {
+            return SqlFunctions.ReturnBook(lib, username, bookid)
+                ? Results.Ok("Book returned successfully")
+                : Results.BadRequest("Return failed");
+        });
+
+        app.MapGet("/user/bookissue/{username}/{bookid:int}", (string username,int bookid)=>{
+            return SqlFunctions.IssueBook(lib, bookid, username) ? Results.Ok("Book issued successfully") 
+            : Results.BadRequest("Book issuing failed");
+        });
     }
 
 }

@@ -19,31 +19,25 @@ export class Homepage implements OnInit {
   isLoading:boolean = true
   slowReadingBook:string = "https://covers.openlibrary.org/b/id/5546156-M.jpg"
   allBooks : book[] = []
-  constructor(public homePageServ : homePageService,public cd:ChangeDetectorRef,private router:Router){}
-  
+  constructor(public homePageServ : homePageService,public cd:ChangeDetectorRef){}
+
   ngOnInit(): void {
-    this.homePageServ.initializeScreen().subscribe({
-  next: (books: book[]) => {
-    this.allBooks = books;
-    for(let book of this.allBooks){
-      console.log(book.bookName + " " + book.bookCount);
-    }
-  },
-  error: (error:any) => {
-    alert(error);
-    console.error('Error:', error);
-  },
-
-  complete:()=>{
-    this.isLoading = false;
-    this.cd.detectChanges()
+    this.homePageServ.initializeScreen()
   }
-
-  });
   
+  signout(){
+    this.homePageServ.signout()
   }
 
-  signout():void{
-    this.router.navigate(['/login'])
+  issueBook(bookId:number){
+    this.homePageServ.issueBook(bookId).subscribe({
+      next:()=>{
+        alert("book issue");
+      },
+      error:()=>{
+        alert("error occured");
+      }
+    })
   }
+
 }

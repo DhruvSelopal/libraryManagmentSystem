@@ -77,11 +77,13 @@ public static class SqlFunctions
     {
         // Mark the IssueRecord as returned (IsReturned = 1) and update ReturnDate
         int rows = lib.Database.ExecuteSqlRaw(@"
-            UPDATE dbo.IssueRecords
+            UPDATE TOP(1) dbo.IssueRecords
             SET IsReturned = 1,
                 ReturnDate = GETDATE()
             WHERE UserName = {0} AND BookId = {1} AND IsReturned = 0",
             username, bookId);
+
+        Console.Write(rows);
 
         if (rows == 0)
             return false;

@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LoginService } from './loginService';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,6 @@ export class LoginComponent {
   password: string = 'dhruv@123';
 
   private loginService = inject(LoginService);
-  private router = inject(Router);
 
   constructor(private hs : homePageService){}
 
@@ -28,17 +27,7 @@ export class LoginComponent {
       alert("Fields can't be empty");
       return;
     }
+    this.loginService.login(this.username,this.password)
 
-    this.loginService.login(this.username, this.password).subscribe({
-      next: (response) => {
-        console.log("login successful")
-        this.hs.username = this.username
-        this.router.navigate(["/homepage"])
-      },
-      error: (error) => {
-        alert("Error occurred");
-        console.error('Login error:', error);
-      }
-    });
   }
 }
