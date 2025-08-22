@@ -1,18 +1,20 @@
 import { Component } from "@angular/core";
 import {LoadingService} from "./loadingService"
+import { Observable } from "rxjs";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
     selector:"loading",
     standalone:true,
     templateUrl:"./loading.html",
-    styleUrl:"./loading.css"
+    styleUrl:"./loading.css",
+    imports: [AsyncPipe]
 }) export class loadingComponent{
-    shouldLoad:boolean = false;
+
+    shouldload: Observable<boolean> = new Observable<boolean>();
     constructor(private ls: LoadingService){}
 
     ngOnInit(){
-        this.ls.$loading.subscribe(data=>{
-            this.shouldLoad = data;
-        })
+        this.shouldload = this.ls.$loading
     }
 }

@@ -9,7 +9,7 @@
     <div class="profile-dropdown">
       <button class="profile-button">
         <img src="/deaultprofile.png" alt="Profile" class="profile-icon">
-        <span class="profile-name">{{homePageServ.username}}</span>
+        <span class="profile-name">{{username}}</span>
         
       </button>
       <div class="dropdown-menu">
@@ -37,8 +37,8 @@
 
     <h2>Featured Books</h2>
     <section class="book-section">
-     <div *ngFor="let book of allBooks">
-            <div class="container-fluid" [ngClass]="book.bookCount === 0? 'outOfStock':'notOutOfStock'" style="text-align: center;">
+     @for (book of allBooks;track $index;let i = $index){
+      <div class="container-fluid" [ngClass]="book.bookCount <= 0? 'outOfStock':'notOutOfStock'" style="text-align: center;">
                 <div class="row">
                     <div class="col-2">&nbsp;</div>
                     <div class="col-8" >
@@ -56,12 +56,12 @@
                 <div class="row" >
                     <div class="col-1">&nbsp;</div>
                     <div class="col-10">
-                        <button class="btn btn-primary" (click)="issueBook(book.bookId)">Issue Book</button>
+                        <button class="btn btn-primary" (click)="issueBook(book.bookId,i)">Issue Book</button>
                     </div>
                     <div class="col-1">&nbsp;</div>
                 </div>
             </div>
-    </div>
+     }
      
     </section>
     

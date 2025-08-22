@@ -12,23 +12,17 @@ import { FormsModule } from "@angular/forms";
     providedIn:"root"
 })
 export class homePageService{
-    username:string | null = null;
-
-    
-
+    username:string | null = ""
     constructor (private http : HttpClient,private router:Router,private ls : LoginService){}
 
-    ngOnInit(){
-        this.ls.user$.subscribe(username=>{
-            this.username = username
-        })
+
+    getusername(username:string | null):void{
+        this.username = username
+        console.log(this.username)
     }
 
-    initializeScreen():void{
-        this.http.get<book[]>("http://localhost:5132/books").subscribe({
-            
-        });
-        return false;
+    initializeScreen():Observable<book[]>{
+        return this.http.get<book[]>("http://localhost:5132/books");
     }
 
     signout():void{

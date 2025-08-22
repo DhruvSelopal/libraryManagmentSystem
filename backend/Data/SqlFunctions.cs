@@ -102,7 +102,7 @@ public static class SqlFunctions
     {
         // Check if book count is available
         var book = lib.Books
-            .FromSqlRaw("SELECT * FROM dbo.Books WHERE BookId = {0}", bookId)
+            .FromSqlRaw("SELECT * FROM dbo.Books WHERE BookId = {0} AND BookCount > 0", bookId)
             .FirstOrDefault();
 
         if (book == null || (book.BookCount ?? 0) <= 0)
