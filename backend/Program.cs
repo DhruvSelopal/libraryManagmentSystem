@@ -33,7 +33,8 @@ class Program
         DbContextOptions<LibraryContext> options = new DbContextOptionsBuilder<LibraryContext>().UseSqlServer(dbUrl).Options;
         LibraryContext lib = new LibraryContext(options);
 
-        WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        JwtTokenGenerator.Initialize(config);
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowAll", policy =>

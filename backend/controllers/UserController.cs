@@ -1,6 +1,7 @@
 using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.VisualBasic;
 
 static public class UserController
 {
@@ -16,12 +17,17 @@ static public class UserController
         : Results.BadRequest("User exists");
 });
 
-        app.MapPost("/user/login", (LoginRequest lr) =>
+        app.MapPost("/user/login", async (LoginRequest lr) =>
         {
-            return SqlFunctions.Login(lib, lr)
-                ? Results.Ok("Login successful")
-                : Results.Unauthorized();
+            if (await SqlFunctions.Login(lib, lr))
+            {
+                return Results.Ok(new { token = JwtTokenGenerator.GenerateToken(lr.Username) });
+            }
+
+            return Results.Unauthorized();
         });
+
+
 
         app.MapGet("/user/getbooks/{username}", (string username) =>
         {

@@ -28,7 +28,7 @@ public static class SqlFunctions
         return rows > 0;
     }
 
-    public static bool Login(LibraryContext lib, LoginRequest login)
+    public static async Task<bool> Login(LibraryContext lib, LoginRequest login)
     {
         Console.WriteLine($"Username : {login.Username}     password: {login.Password}");
         // Check username and password match
