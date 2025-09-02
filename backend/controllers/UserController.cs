@@ -25,7 +25,7 @@ static public class UserController
             }
 
             return Results.Unauthorized();
-        });
+        }).AllowAnonymous();
 
 
 
@@ -49,11 +49,12 @@ static public class UserController
                 : Results.BadRequest("Return failed");
         });
 
-        app.MapGet("/user/bookissue/{username}/{bookid:int}", async (string username,int bookid)=>{
+        app.MapGet("/user/bookissue/{username}/{bookid:int}", async (string username, int bookid) =>
+        {
             await Task.Delay(5000);
             return SqlFunctions.IssueBook(lib, bookid, username) ? Results.Ok("Book issued successfully")
             : Results.BadRequest("Book issuing failed");
-        });
+        }).RequireAuthorization();
     }
 
 }

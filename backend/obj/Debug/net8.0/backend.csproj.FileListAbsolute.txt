@@ -168,3 +168,4 @@ C:\Users\dhruvs\Desktop\angular\libraryManagmentSystem\backend\obj\Debug\net8.0\
 C:\Users\dhruvs\Desktop\angular\libraryManagmentSystem\backend\obj\Debug\net8.0\backend.pdb
 C:\Users\dhruvs\Desktop\angular\libraryManagmentSystem\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 C:\Users\dhruvs\Desktop\angular\libraryManagmentSystem\backend\obj\Debug\net8.0\ref\backend.dll
+C:\Users\dhruvs\Desktop\angular\libraryManagmentSystem\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
