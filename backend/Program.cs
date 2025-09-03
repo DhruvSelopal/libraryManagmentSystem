@@ -27,52 +27,57 @@ class Program
         // Add configuration to services
         builder.Services.AddSingleton(config);
         JwtTokenGenerator.Initialize(config);
-        
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowAll", policy =>
-            {
-                policy.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });
-        });
+
+        // builder.Services.AddCors(options =>
+        // {
+        //     options.AddPolicy("AllowAll", policy =>
+        //     {
+        //         policy.AllowAnyOrigin()
+        //             .AllowAnyMethod()
+        //             .AllowAnyHeader();
+        //     });
+        // });
+        CorsService corssservice = new CorsService(builder);
+        corssservice.useCors();
 
         // Add JWT authentication
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(config["jwt:Key"])), // Use config instead of builder.Configuration
+        // builder.Services.AddAuthentication(options =>
+        // {
+        //     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        //     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        // })
+        // .AddJwtBearer(options =>
+        // {
+        //     options.TokenValidationParameters = new TokenValidationParameters
+        //     {
+        //         ValidateIssuerSigningKey = true,
+        //         IssuerSigningKey = new SymmetricSecurityKey(
+        //             Encoding.UTF8.GetBytes(config["jwt:Key"])), // Use config instead of builder.Configuration
 
-                ValidateIssuer = true,
-                ValidIssuer = config["jwt:Issuer"],
-                ValidateAudience = true,
-                ValidAudience = config["jwt:Audience"],
-                ValidateLifetime = true,
-            };
+        //         ValidateIssuer = true,
+        //         ValidIssuer = config["jwt:Issuer"],
+        //         ValidateAudience = true,
+        //         ValidAudience = config["jwt:Audience"],
+        //         ValidateLifetime = true,
+        //     };
 
-            options.Events = new JwtBearerEvents
-            {
-                OnAuthenticationFailed = context =>
-                {
-                    Console.WriteLine($"Authentication failed: {context.Exception.Message}");
-                    return Task.CompletedTask;
-                },
-                OnTokenValidated = context =>
-                {
-                    Console.WriteLine("Token successfully validated");
-                    return Task.CompletedTask;
-                }
-            };
-        });
+        //     options.Events = new JwtBearerEvents
+        //     {
+        //         OnAuthenticationFailed = context =>
+        //         {
+        //             Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+        //             return Task.CompletedTask;
+        //         },
+        //         OnTokenValidated = context =>
+        //         {
+        //             Console.WriteLine("Token successfully validated");
+        //             return Task.CompletedTask;
+        //         }
+        //     };
+        // });
+
+        AuthService authservice = new AuthService(builder, config);
+        authservice.UseRefreshAuthentication();
 
         // In Program.cs
         builder.Services.AddEndpointsApiExplorer(); // Required for Minimal APIs
