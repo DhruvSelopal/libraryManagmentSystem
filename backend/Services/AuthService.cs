@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 public class AuthService
 {
     private WebApplicationBuilder _builder;
@@ -16,7 +17,7 @@ public class AuthService
         _config = config;
     }
 
-    public void UseRefreshAuthentication()
+    public void UseAcessAuthentication()
     {
         _builder.Services.AddAuthentication(options =>
         {
@@ -54,10 +55,10 @@ public class AuthService
             };
         });
     }
-    public void UseAccessAuthentication()
+    public bool AuthenticateRefreshToken(string token)
     {
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-        Byte[] key = Encoding.UTF8.GetBytes(_config["jwt:key"]);
+        Byte[] key = Encoding.UTF8.GetBytes(_config["Refresh:key"]);
 
         TokenValidationParameters validationParameters = new TokenValidationParameters
         {
@@ -65,11 +66,21 @@ public class AuthService
             IssuerSigningKey = new SymmetricSecurityKey(key),
 
             ValidateIssuer = true,
-            ValidIssuer = _config["jwt:Issuer"],
+            ValidIssuer = _config["Refresh:Issuer"],
             ValidateAudience = true,
-            ValidAudience = _config["jwt:Audience"],
+            ValidAudience = _config["Refresh:Audience"],
 
             ValidateLifetime = true
         };
+
+        try
+        {
+            ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        return true;
     }
 }

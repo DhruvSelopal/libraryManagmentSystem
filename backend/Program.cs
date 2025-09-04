@@ -26,7 +26,7 @@ class Program
         
         // Add configuration to services
         builder.Services.AddSingleton(config);
-        JwtTokenGenerator.Initialize(config);
+        TokenGeneration.JwtTokenGenerator.Initialize(config);
 
         // builder.Services.AddCors(options =>
         // {
@@ -77,7 +77,7 @@ class Program
         // });
 
         AuthService authservice = new AuthService(builder, config);
-        authservice.UseRefreshAuthentication();
+        authservice.UseAcessAuthentication();   // 
 
         // In Program.cs
         builder.Services.AddEndpointsApiExplorer(); // Required for Minimal APIs
@@ -110,7 +110,7 @@ class Program
 
         // Register your routes AFTER authentication middleware
         BookController.RegisterBookRoutes(app, lib);
-        UserController.registerUserRoutes(app, lib);
+        UserController.registerUserRoutes(app, lib,authservice);
        
 
         app.Run();

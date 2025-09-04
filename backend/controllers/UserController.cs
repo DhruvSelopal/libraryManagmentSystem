@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
@@ -6,7 +7,7 @@ using Microsoft.VisualBasic;
 static public class UserController
 {
 
-    public static void registerUserRoutes(WebApplication app, LibraryContext lib)
+    public static void registerUserRoutes(WebApplication app, LibraryContext lib,AuthService authservice)
     {
         Console.WriteLine("code is reaching till this point");
         // creating user
@@ -21,7 +22,11 @@ static public class UserController
         {
             if (await SqlFunctions.Login(lib, lr))
             {
-                return Results.Ok(new { token = JwtTokenGenerator.GenerateToken(lr.Username) });
+                return Results.Ok(new
+                {
+                    Refreshtoken = TokenGeneration.JwtTokenGenerator.GenerateRefreshToken(lr.Username),
+                    AcessToken = TokenGeneration.JwtTokenGenerator.GenerateAcessToken(lr.Username)
+                 });
             }
 
             return Results.Unauthorized();
@@ -49,9 +54,19 @@ static public class UserController
                 : Results.BadRequest("Return failed");
         });
 
-        app.MapGet("/user/bookissue/{username}/{bookid:int}", async (string username, int bookid) =>
+        app.MapGet("/user/bookissue/{username}/{bookid:int}", async (string username, int bookid, HttpRequest request) =>
         {
             await Task.Delay(5000);
+            string refreshToken;
+            if (!request.Headers.TryGetValue("refreshtoken", out var reftoken)) return Results.BadRequest("refresh token was missing");
+            refreshToken = reftoken.ToString();
+
+
+            if (!authservice.AuthenticateRefreshToken(refreshToken)){
+                Console.WriteLine("Refresh token is invalid");
+                return Results.BadRequest("invalid token ");
+            }
+
             return SqlFunctions.IssueBook(lib, bookid, username) ? Results.Ok("Book issued successfully")
             : Results.BadRequest("Book issuing failed");
         }).RequireAuthorization();
