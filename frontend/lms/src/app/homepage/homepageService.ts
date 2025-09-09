@@ -22,14 +22,15 @@ export class homePageService{
     }
 
     initializeScreen():Observable<book[]>{
-        return this.http.get<book[]>("http://localhost:5132/books");
+        return this.http.get<book[]>("http://192.168.6.55:5000/books");
     }
 
     signout():void{
+        localStorage.clear()
     this.router.navigate(['/login'])
     }
 
     issueBook(bookId:number):Observable<void>{
-        return this.http.get<void>(`http://localhost:5132/user/bookissue/${this.username}/${bookId}`)
+        return this.http.get<void>(`http://192.168.6.55:5000/user/bookissue/${this.username}/${bookId}`)
     }
 }

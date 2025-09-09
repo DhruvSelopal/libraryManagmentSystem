@@ -21,6 +21,6 @@ static public class BookController
         app.MapGet("/books", () =>
         {
             return SqlFunctions.GetBooks(lib);
-        });
+        }).RequireAuthorization();
     }
 }

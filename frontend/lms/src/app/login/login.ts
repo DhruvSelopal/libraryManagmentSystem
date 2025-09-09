@@ -2,8 +2,9 @@ import { homePageService } from './../homepage/homepageService';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { LoginService } from './loginService';
+import { LoginService, LoginResponse } from './loginService';
 import { Router } from '@angular/router';
+import { HttpResponse,HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -29,13 +30,17 @@ export class LoginComponent {
       return;
     }
     this.loginService.login(this.username,this.password).subscribe({
-      next:()=>{
+      next:(data:LoginResponse)=>{
+        console.log(data.acesstoken);
+        console.log(data.refreshtoken)
+        localStorage.setItem('AcessToken',data.acesstoken)
+        localStorage.setItem('RefreshToken',data.refreshtoken)
         this.router.navigate(['/homepage',this.username])
       },
-      error:(err)=>{
-        alert(err);
+      error:(err:HttpErrorResponse)=>{
+        alert(err.statusText);
       }
     })
-
+    
   }
 }

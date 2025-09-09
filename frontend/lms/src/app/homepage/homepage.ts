@@ -1,7 +1,7 @@
 import { homePageService } from './homepageService';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { Bookcard } from './bookcard/bookcard';
 import { book } from './bookModel';
@@ -22,7 +22,7 @@ export class Homepage implements OnInit {
   constructor(public homePageServ : homePageService,public cd:ChangeDetectorRef,private route : ActivatedRoute ){}
 
   ngOnInit(): void {
-
+    debugger
     this.username = this.route.snapshot.paramMap.get("username")
     console.log(this.username)
      this.homePageServ.getusername(this.username);
@@ -35,8 +35,8 @@ export class Homepage implements OnInit {
         this.allBooks = data;
         this.cd.detectChanges()
       },
-      error:(err)=>{
-        alert(err);
+      error:(err:HttpErrorResponse)=>{
+        alert(err.message);
       }
     });
   }
@@ -46,6 +46,7 @@ export class Homepage implements OnInit {
   }
 
   issueBook(bookId:number,i:number){
+    debugger
     this.homePageServ.issueBook(bookId).subscribe({
       next:()=>{
         console.log("books issued")
@@ -53,8 +54,8 @@ export class Homepage implements OnInit {
         console.log(this.allBooks[i].bookCount)
 
       },
-      error:()=>{
-        alert("error occured");
+      error:(err:HttpErrorResponse)=>{
+        alert(err.statusText);
       }
     })
   }

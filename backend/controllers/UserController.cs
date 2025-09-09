@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 static public class UserController
 {
 
-    public static void registerUserRoutes(WebApplication app, LibraryContext lib,AuthService authservice)
+    public static void registerUserRoutes(WebApplication app, LibraryContext lib, AuthService authservice)
     {
         Console.WriteLine("code is reaching till this point");
         // creating user
@@ -16,17 +16,19 @@ static public class UserController
     return SqlFunctions.CreateUser(lib, user)
         ? Results.Ok("User added successfully")
         : Results.BadRequest("User exists");
+
 });
 
         app.MapPost("/user/login", async (LoginRequest lr) =>
         {
+            Console.Write("entering login controller");
             if (await SqlFunctions.Login(lib, lr))
             {
                 return Results.Ok(new
                 {
-                    Refreshtoken = TokenGeneration.JwtTokenGenerator.GenerateRefreshToken(lr.Username),
-                    AcessToken = TokenGeneration.JwtTokenGenerator.GenerateAcessToken(lr.Username)
-                 });
+                    refreshtoken = TokenGeneration.JwtTokenGenerator.GenerateRefreshToken(lr.Username),
+                    acesstoken = TokenGeneration.JwtTokenGenerator.GenerateAcessToken(lr.Username)
+                });
             }
 
             return Results.Unauthorized();
@@ -38,38 +40,54 @@ static public class UserController
         {
             var books = SqlFunctions.GetBooksIssuedByUser(lib, username);
             return Results.Ok(books);
-        });
+        }).RequireAuthorization();
 
         app.MapPut("/user/update/{username}", (SignUpRequest user, string username) =>
         {
             return SqlFunctions.UpdateUserDetails(lib, user, username)
                 ? Results.Ok("User updated")
                 : Results.BadRequest("Update failed");
-        });
+        }).RequireAuthorization();
 
         app.MapGet("/user/bookreturn/{username}/{bookid:int}", (string username, int bookid) =>
         {
             return SqlFunctions.ReturnBook(lib, username, bookid)
                 ? Results.Ok("Book returned successfully")
                 : Results.BadRequest("Return failed");
-        });
+        }).RequireAuthorization();
 
         app.MapGet("/user/bookissue/{username}/{bookid:int}", async (string username, int bookid, HttpRequest request) =>
         {
             await Task.Delay(5000);
-            string refreshToken;
-            if (!request.Headers.TryGetValue("refreshtoken", out var reftoken)) return Results.BadRequest("refresh token was missing");
-            refreshToken = reftoken.ToString();
+            // string refreshToken;
+            // if (!request.Headers.TryGetValue("refreshtoken", out var reftoken)) return Results.BadRequest("refresh token was missing");
+            // refreshToken = reftoken.ToString();
 
 
-            if (!authservice.AuthenticateRefreshToken(refreshToken)){
-                Console.WriteLine("Refresh token is invalid");
-                return Results.BadRequest("invalid token ");
-            }
+            // if (!authservice.AuthenticateRefreshToken(refreshToken))
+            // {
+            //     Console.WriteLine("Refresh token is invalid");
+            //     return Results.BadRequest("invalid token ");
+            // }
 
             return SqlFunctions.IssueBook(lib, bookid, username) ? Results.Ok("Book issued successfully")
             : Results.BadRequest("Book issuing failed");
         }).RequireAuthorization();
+
+        app.MapGet("/user/getaccesstoken", (string username, HttpRequest request) =>
+        {
+            if (!request.Headers.TryGetValue("refreshtoken", out var reftoken)) return Results.BadRequest("refresh token was missing");
+            string refreshToken = reftoken.ToString();
+            if (!authservice.AuthenticateRefreshToken(refreshToken))
+            {
+                Console.WriteLine("token is invalid");
+                return Results.BadRequest("invalid token");
+            }
+            return Results.Ok(new
+            {
+                accesstoken = TokenGeneration.JwtTokenGenerator.GenerateAcessToken(username)
+            });
+        });
     }
 
 }

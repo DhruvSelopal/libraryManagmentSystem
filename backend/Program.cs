@@ -79,6 +79,11 @@ class Program
         AuthService authservice = new AuthService(builder, config);
         authservice.UseAcessAuthentication();   // 
 
+        builder.WebHost.ConfigureKestrel(serverOptions =>
+        {
+            serverOptions.Listen(System.Net.IPAddress.Parse("192.168.6.55"), 5000);
+        });
+
         // In Program.cs
         builder.Services.AddEndpointsApiExplorer(); // Required for Minimal APIs
         // builder.Services.AddSwaggerGen(c =>

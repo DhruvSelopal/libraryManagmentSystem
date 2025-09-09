@@ -5,10 +5,10 @@ import { finalize } from 'rxjs/operators'; // Import finalize
 import { LoadingService } from '../loadingComponent/loadingService';
 
 // Export a const that is a function matching the HttpInterceptorFn type
-export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
+export const LoadingInterceptor: HttpInterceptorFn = (req, next) => {
   const loadingService = inject(LoadingService);
 
-
+  console.log(req.url + " " + req.headers.getAll);
   loadingService.loadingOn();
 
   return next(req).pipe(

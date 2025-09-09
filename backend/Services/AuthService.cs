@@ -57,8 +57,10 @@ public class AuthService
     }
     public bool AuthenticateRefreshToken(string token)
     {
+        Console.WriteLine(_config["Refresh:Key"] + "this is the token");
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-        Byte[] key = Encoding.UTF8.GetBytes(_config["Refresh:key"]);
+        Byte[] key = Encoding.UTF8.GetBytes(_config["Refresh:Key"]);
+        
 
         TokenValidationParameters validationParameters = new TokenValidationParameters
         {
