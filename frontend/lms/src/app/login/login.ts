@@ -35,6 +35,7 @@ export class LoginComponent {
         console.log(data.refreshtoken)
         localStorage.setItem('AcessToken',data.acesstoken)
         localStorage.setItem('RefreshToken',data.refreshtoken)
+        localStorage.setItem("username",this.username)
         this.router.navigate(['/homepage',this.username])
       },
       error:(err:HttpErrorResponse)=>{

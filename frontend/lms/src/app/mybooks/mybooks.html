@@ -1,55 +1,63 @@
-<main>
-  <section class="hero">
-    <h1>My Borrowed Books</h1>
-    <p>Books you've currently checked out</p>
-  </section>
-
-  <section class="book-section">
-    @for (book of myBooks; track $index; let i = $index) {
-      <div
-        class="container-fluid"
-        [ngClass]="book.isOverdue ? 'overdue-book' : 'borrowed-book'"
-        style="text-align: center;"
-      >
-        <div class="row">
-          <div class="col-2">&nbsp;</div>
-          <div class="col-8">
-            <div>
-              <img
-                class="bookcover"
-                [src]="book.imagePath"
-                [alt]="book.bookName"
-              />
-            </div>
-          </div>
-          <div class="col-2">&nbsp;</div>
-        </div>
-
-        <div class="row mt-2">
-          <div class="col">
-            <h4>{{ book.bookName }}</h4>
-            <p class="text-muted">
-              Borrowed on: {{ book.borrowDate | date:'mediumDate' }}
-              <br />
-              Due by: <span [ngClass]="book.isOverdue ? 'text-danger' : ''">{{ book.dueDate | date:'mediumDate' }}</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-1">&nbsp;</div>
-          <div class="col-10">
-            <button
-              class="btn btn-warning"
-              (click)="returnBook(book.bookId, i)"
-            >
-              Return Book
-            </button>
-          </div>
-          <div class="col-1">&nbsp;</div>
-        </div>
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="logo">LibraryHub</a>
+    <div class="nav-links">
+      <a href="/home" class="active">Home</a>
+      <a href="/books">Browse Books</a>
+      <a >My Books</a>
+    </div>
+    <div class="profile-dropdown">
+      <button class="profile-button">
+        <img src="/deaultprofile.png" alt="Profile" class="profile-icon">
+        <span class="profile-name">xyz</span>
+        
+      </button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item">
+          <i class="icon-user"></i> My Profile
+        </button>
+        <button class="dropdown-item">
+          <i class="icon-settings"></i> Settings
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item logout" >
+          <i class="icon-logout"></i> Sign Out
+        </button>
       </div>
-    }
-  </section>
-</main>
+    </div>
+  </div>
+</nav>
 
+  <!-- Static Content -->
+  <main>
+    <section class="hero">
+      <h1>User issued books</h1>
+      <p>Manage your issued books here</p>
+    </section>
+
+<section class="book-section">
+     @for (book of issuedBooks;track $index;let i = $index){
+      <div class="container-fluid"  style="text-align: center;">
+                <div class="row">
+                    <div class="col-2">&nbsp;</div>
+                    <div class="col-8" >
+                        <div>
+                            <img class="bookcover" src="{{book.imagePath}}" alt="{{book.bookName}}" >
+                        </div>
+                    </div>
+                    <div class="col-2">&nbsp;</div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h4>{{book.bookName}}</h4>
+                  </div>
+                </div>
+                <div class="row" >
+                    <div class="col-1">&nbsp;</div>
+                    <div class="col-10">
+                        <button class="btn btn-primary" (click)="returnBook(book)">Return</button>
+                    </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+            </div>
+     }
